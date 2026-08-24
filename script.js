@@ -492,16 +492,6 @@ const guests = {
     allowedGuests: 1,
     invitedGuests: ["Grace Adams"]
   },
-    "enrique-castaneira": {
-    displayName: "Grace Adams",
-    allowedGuests: 1,
-    invitedGuests: ["Grace Adams"]
-  },
-    "alex-thomas": {
-    displayName: "Alex Thomas",
-    allowedGuests: 1,
-    invitedGuests: ["Alex Thomas"]
-  },
     "alex-szabo": {
     displayName: "Aex & Dina Szabo",
     allowedGuests: 2,
@@ -598,6 +588,7 @@ const yesOptions = document.getElementById("yesOptions");
 const meal = document.getElementById("meal");
 const guestCount = document.getElementById("guestCount");
 const rsvpForm = document.getElementById("rsvpForm");
+const rsvpStatusDisplay = document.getElementById("rsvpStatusDisplay");
 
 guestPreview.textContent = `${currentGuest.displayName}`;
 guestName.textContent = currentGuest.displayName;
@@ -605,6 +596,100 @@ nameInput.value = currentGuest.displayName;
 
 guestLimitText.textContent =
   `We have reserved ${currentGuest.allowedGuests} seat${currentGuest.allowedGuests > 1 ? "s" : ""} in your honor.`;
+/* =========================
+   RSVP STATUS DISPLAY
+========================= */
+
+function displayRSVPStatus() {
+
+  if (!rsvpStatusDisplay) return;
+
+  // STATUS 0 = NO RSVP YET
+  if (currentGuest.status === 0 || currentGuest.status === undefined) {
+    rsvpStatusDisplay.classList.add("hidden");
+    rsvpForm.classList.remove("hidden");
+    return;
+  }
+
+  // Hide the existing RSVP form
+  rsvpForm.classList.add("hidden");
+
+  // Show the status display
+  rsvpStatusDisplay.classList.remove("hidden");
+
+  // STATUS 1 = ATTENDING
+  if (currentGuest.status === 1) {
+
+    const confirmedGuests = currentGuest.confirmedGuests || [];
+
+    let guestsHTML = "";
+
+    confirmedGuests.forEach(guest => {
+      guestsHTML += `
+        <div class="confirmed-guest">
+          <p class="confirmed-guest-name">${guest.name}</p>
+          <p class="confirmed-guest-meal">${guest.meal}</p>
+        </div>
+      `;
+    });
+
+    rsvpStatusDisplay.innerHTML = `
+      <div class="rsvp-confirmed">
+        <p class="section-label">RSVP</p>
+
+        <h2>We’ll See You There</h2>
+
+        <p class="soft-copy">
+          We are so happy to celebrate this special day with you.
+        </p>
+
+        <div class="confirmed-guests-list">
+          ${guestsHTML}
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  // STATUS 2 = NOT ATTENDING
+  if (currentGuest.status === 2) {
+
+    const names = currentGuest.invitedGuests || [];
+
+    let namesHTML = "";
+
+    names.forEach(name => {
+      namesHTML += `
+        <p class="declined-guest-name">${name}</p>
+      `;
+    });
+
+    rsvpStatusDisplay.innerHTML = `
+      <div class="rsvp-declined">
+        <p class="section-label">RSVP</p>
+
+        <h2>We’re Sorry You Can’t Join Us</h2>
+
+        <p class="soft-copy">
+          We received your response and understand that you will not be able to attend.
+        </p>
+
+        <div class="declined-guests-list">
+          ${namesHTML}
+        </div>
+
+        <p class="declined-response">
+          Your decision: <strong>Will Not Attend</strong>
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+}
+
+displayRSVPStatus();
 
 function buildGuestCountOptions() {
   guestCount.innerHTML = "";
