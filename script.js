@@ -1157,13 +1157,14 @@ function displayRSVPStatus() {
 
         <h2>We’ll See You There</h2>
 
-        <p class="soft-copy">
-          We are so happy to celebrate this special day with you.
-        </p>
-
         <div class="confirmed-guests-list">
           ${guestsHTML}
         </div>
+
+         <p class="soft-copy">
+          We are so happy to celebrate this special day with you.
+        </p>
+        
       </div>
     `;
 
@@ -1189,17 +1190,14 @@ function displayRSVPStatus() {
 
         <h2>We’re Sorry You Can’t Join Us</h2>
 
-        <p class="soft-copy">
-          We received your response and understand that you will not be able to attend.
-        </p>
-
         <div class="declined-guests-list">
           ${namesHTML}
         </div>
 
-        <p class="declined-response">
-          Your decision: <strong>Will Not Attend</strong>
+          <p class="soft-copy">
+          We received your response and understand that you will not be able to attend.
         </p>
+        
       </div>
     `;
 
