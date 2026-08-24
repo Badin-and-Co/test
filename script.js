@@ -1197,7 +1197,7 @@ function displayRSVPStatus() {
 
         <p class="section-label">RSVP</p>
 
-        <h2>We’re Sorry You Can’t Join Us</h2>
+        <h2>We Will Miss You</h2>
 
         <div class="declined-guests-list">
           ${namesHTML}
