@@ -1107,6 +1107,7 @@ const meal = document.getElementById("meal");
 const guestCount = document.getElementById("guestCount");
 const rsvpForm = document.getElementById("rsvpForm");
 const rsvpStatusDisplay = document.getElementById("rsvpStatusDisplay");
+const rsvpFormContent = document.getElementById("rsvpFormContent");
 
 guestPreview.textContent = `${currentGuest.displayName}`;
 guestName.textContent = currentGuest.displayName;
@@ -1120,20 +1121,25 @@ guestLimitText.textContent =
 
 function displayRSVPStatus() {
 
-  if (!rsvpStatusDisplay) return;
+  if (!rsvpStatusDisplay || !rsvpFormContent) return;
 
   // STATUS 0 = NO RSVP YET
   if (currentGuest.status === 0 || currentGuest.status === undefined) {
+
+    // Show the normal RSVP section
     rsvpStatusDisplay.classList.add("hidden");
-    rsvpForm.classList.remove("hidden");
+    rsvpFormContent.classList.remove("hidden");
+
     return;
   }
 
-  // Hide the existing RSVP form
-  rsvpForm.classList.add("hidden");
+  // For STATUS 1 or 2:
+  // Hide EVERYTHING inside the normal RSVP form area
+  rsvpFormContent.classList.add("hidden");
 
   // Show the status display
   rsvpStatusDisplay.classList.remove("hidden");
+
 
   // STATUS 1 = ATTENDING
   if (currentGuest.status === 1) {
@@ -1153,6 +1159,7 @@ function displayRSVPStatus() {
 
     rsvpStatusDisplay.innerHTML = `
       <div class="rsvp-confirmed">
+
         <p class="section-label">RSVP</p>
 
         <h2>We’ll See You There</h2>
@@ -1161,15 +1168,16 @@ function displayRSVPStatus() {
           ${guestsHTML}
         </div>
 
-         <p class="soft-copy">
+        <p class="soft-copy">
           We are so happy to celebrate this special day with you.
         </p>
-        
+
       </div>
     `;
 
     return;
   }
+
 
   // STATUS 2 = NOT ATTENDING
   if (currentGuest.status === 2) {
@@ -1186,6 +1194,7 @@ function displayRSVPStatus() {
 
     rsvpStatusDisplay.innerHTML = `
       <div class="rsvp-declined">
+
         <p class="section-label">RSVP</p>
 
         <h2>We’re Sorry You Can’t Join Us</h2>
@@ -1194,16 +1203,17 @@ function displayRSVPStatus() {
           ${namesHTML}
         </div>
 
-          <p class="soft-copy">
+        <p class="soft-copy">
           We received your response and understand that you will not be able to attend.
         </p>
-        
+
       </div>
     `;
 
     return;
   }
 }
+
 
 displayRSVPStatus();
 
